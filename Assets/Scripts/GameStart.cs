@@ -1,28 +1,32 @@
 
 
-using System;
+
 using System.Collections;
 using System.IO;
-using System.Net.NetworkInformation;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 
-public class ButtonsClick2 : MonoBehaviour
+public class GameStart : MonoBehaviour
 {
     [SerializeField]  TextMeshProUGUI[] TextButton = new TextMeshProUGUI[4];
     [SerializeField] Button[] ButtonS = new Button[4];
     
     public TextAsset jsonFile;
     public Image ImageMain;
+    string ImageMain1;
+
+
+    string currentScene = "s001e001";
+    bool StoryOn = true;
 
     private string BackgroundsPath = "/_res/bg/";
+    private string ScenePath = "/scenes/";
 
 
-    [SerializeField] public Sprite Sprite1;
-    [SerializeField] public Sprite Sprite2;
     [SerializeField] public RawImage RawImage2;
 
     
@@ -30,39 +34,74 @@ public class ButtonsClick2 : MonoBehaviour
     [System.Serializable]
     public class Scene
     {
+        public string Button0;
         public string Button1;
         public string Button2;
         public string Button3;
-        public string Button0;
+        
 
-        public string Click1;
-        public string Click2;
-        public string Click3;
-        public string Click0;
+        public string SceneClick0; 
+        public string SceneClick1;
+        public string SceneClick2;
+        public string SceneClick3;
 
+        public string Points0;
         public string Points1;
         public string Points2;
         public string Points3;
-        public string Points0;
+
         public string Pictures;
         
 
     }
     void Start()
     {
-        ButtonS[0].onClick.AddListener(TaskOnClick0);
-        ButtonS[1].onClick.AddListener(TaskOnClick1);
-        ButtonS[2].onClick.AddListener(TaskOnClick2);
-        ButtonS[3].onClick.AddListener(TaskOnClick3);
-        //   ButtonS[2].onClick.AddListener(delegate { TaskWithParameters("Hello"); });
-        //   ButtonS[3].onClick.AddListener(() => ButtonClicked(42));
+        ButtonsTextSetiing();
+        ButtonsLisening();
 
-        sets1();
+
+         while (StoryOn)
+            {
+                ButtonsTextSetiing();
+
+            }
+
+
     }
 
 
 
+    void ButtonsLisening()
+    {
+        ButtonS[0].onClick.AddListener(TaskOnClick0);
+        ButtonS[1].onClick.AddListener(TaskOnClick1);
+        ButtonS[2].onClick.AddListener(TaskOnClick2);
+        ButtonS[3].onClick.AddListener(TaskOnClick3);
+    }
 
+    public void ButtonsTextSetiing()
+    {
+
+        string jsonFile0 = Application.dataPath + ScenePath + currentScene+".json";
+        string textTMp = File.ReadAllText(jsonFile0);
+        print(jsonFile0);
+        print(textTMp);
+        
+
+        SceneList List001 = JsonUtility.FromJson<SceneList>(textTMp);
+        
+        foreach (Scene e in List001.SceneQ)
+        {
+            TextButton[0].text = e.Button0;
+            TextButton[1].text = e.Button1;
+            TextButton[2].text = e.Button2;
+            TextButton[3].text = e.Button3;
+            ImageMain1 = e.Pictures;
+            print(ImageMain1);
+        }
+
+
+    }
 
 
 
@@ -86,7 +125,7 @@ public class ButtonsClick2 : MonoBehaviour
         StartCoroutine(TaskOnClick_100("osen74.png"));
     }
 
-  
+ 
     IEnumerator TaskOnClick_100(string filetexture)
     {
         string pathPics2 = Application.dataPath + BackgroundsPath + filetexture;
@@ -111,41 +150,8 @@ public class ButtonsClick2 : MonoBehaviour
 
 
     }
-    //IEnumerator TaskOnClick_101()
-    //{
-    //    string pathPics2 = Application.dataPath + BackgroundsPath + "osen74.png ";
-    //    WWW www = new WWW(pathPics2);
-    //    while (!www.isDone)
-    //        yield return null;
-    //    GameObject image = GameObject.Find("RawImage");
-    //    image.GetComponent<RawImage>().texture = www.texture;
-    //}
-    //IEnumerator TaskOnClick_102()
-    //{
-    //    string pathPics2 = Application.dataPath + BackgroundsPath + "osen73.png";
-    //    WWW www = new WWW(pathPics2);
-    //    while (!www.isDone)
-    //        yield return null;
-    //    GameObject image = GameObject.Find("RawImage");
-    //    image.GetComponent<RawImage>().texture = www.texture;
-    //}
-
-    //IEnumerator TaskOnClick_103()
-    //{
-    //    string pathPics2 = Application.dataPath + BackgroundsPath + "autumn0001p.png";
-    //    WWW www = new WWW(pathPics2);
-    //    while (!www.isDone)
-    //        yield return null;
-    //    GameObject image = GameObject.Find("RawImage");
-    //    image.GetComponent<RawImage>().texture = www.texture;
 
 
-    //}
-
-    void TaskOnClick3222()
-    {
-        ImageMain.sprite = Sprite2;
-    }
     
     void TaskWithParameters(string message)
     {
@@ -159,23 +165,6 @@ public class ButtonsClick2 : MonoBehaviour
   
   
 
-    public void sets1()
-    {
-        SceneList List001 = JsonUtility.FromJson<SceneList>(jsonFile.text);
-        int ii = 0;
-
-        foreach (Scene e in List001.SceneQ)
-        {
-            TextButton[0].text = e.Button0;
-            TextButton[1].text = e.Button1;
-            TextButton[2].text = e.Button2;
-            TextButton[3].text = e.Button3;
-
-            var ImageMain1 = e.Pictures;
-         //   print(ImageMain1);
-            ii++;
-        }
-    }
 
 
 
