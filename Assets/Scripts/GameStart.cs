@@ -24,7 +24,7 @@ public class GameStart : MonoBehaviour
     bool StoryOn = true;
 
     private string BackgroundsPath = "/_res/bg/";
-    private string ScenePath = "/scenes/";
+    private string ScenePath = "/Episodes/";
 
 
     [SerializeField] public RawImage RawImage2;
