@@ -14,10 +14,16 @@ public class GameStart : MonoBehaviour
 {
     [SerializeField]  TextMeshProUGUI[] TextButton = new TextMeshProUGUI[4];
     [SerializeField] Button[] ButtonS = new Button[4];
-    
+    string[] SceneClick = new string[4];
+    string[] Picture = new string[4];
+    public string Pictures;
+
+
+
+
     public TextAsset jsonFile;
     public Image ImageMain;
-    string ImageMain1;
+    string ImageMainName;
 
 
     string currentScene = "s001e001";
@@ -51,24 +57,26 @@ public class GameStart : MonoBehaviour
         public string Points3;
 
         public string Pictures;
-        
+
+        public string Picture0;
+        public string Picture1;
+        public string Picture2;
+        public string Picture3;
+
 
     }
     void Start()
     {
-        ButtonsTextSetiing();
         ButtonsLisening();
-
-
-         while (StoryOn)
-            {
-                ButtonsTextSetiing();
-
-            }
-
-
+        newLevel();
     }
 
+
+    void newLevel()
+    {
+        Init1();  //old name ButtonsTextSetiing();
+        picturesMain();
+    }
 
 
     void ButtonsLisening()
@@ -79,7 +87,7 @@ public class GameStart : MonoBehaviour
         ButtonS[3].onClick.AddListener(TaskOnClick3);
     }
 
-    public void ButtonsTextSetiing()
+    public void Init1()
     {
 
         string jsonFile0 = Application.dataPath + ScenePath + currentScene+".json";
@@ -96,11 +104,19 @@ public class GameStart : MonoBehaviour
             TextButton[1].text = e.Button1;
             TextButton[2].text = e.Button2;
             TextButton[3].text = e.Button3;
-            ImageMain1 = e.Pictures;
-            print(ImageMain1);
+
+            Picture[0] = e.Picture0;
+            Picture[1] = e.Picture1;
+            Picture[2] = e.Picture2;
+            Picture[3] = e.Picture3;
+
+            SceneClick[0] = e.SceneClick0;
+            SceneClick[1] = e.SceneClick1;
+            SceneClick[2] = e.SceneClick2;
+            SceneClick[3] = e.SceneClick3;
+
+            Pictures = e.Pictures;
         }
-
-
     }
 
 
@@ -109,27 +125,59 @@ public class GameStart : MonoBehaviour
 
     void TaskOnClick0()
     {
-        StartCoroutine(TaskOnClick_100("osen72.png"));
+        string currentScene = SceneClick[0];
+        StartCoroutine(TaskOnClick_100(0));
+        newLevel();
     }
     void TaskOnClick1()
     {
-        StartCoroutine(TaskOnClick_100("osen71.png"));
+        string currentScene = SceneClick[1];
+        StartCoroutine(TaskOnClick_100(1));
+        newLevel();
     }
 
     void TaskOnClick2()
     {
-        StartCoroutine(TaskOnClick_100("osen73.png"));
+        string currentScene = SceneClick[2];
+        StartCoroutine(TaskOnClick_100(2));
+        newLevel();
     }
     void TaskOnClick3()
     {
-        StartCoroutine(TaskOnClick_100("osen74.png"));
+        string currentScene = SceneClick[3];
+        StartCoroutine(TaskOnClick_100(3));
+        newLevel();
     }
 
- 
-    IEnumerator TaskOnClick_100(string filetexture)
-    {
-        string pathPics2 = Application.dataPath + BackgroundsPath + filetexture;
 
+    IEnumerator TaskOnClick_100(int ButtonNumber)
+    {
+        string pathPics2 = Application.dataPath + BackgroundsPath + Picture[ButtonNumber];
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(pathPics2))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                var texteures1 = DownloadHandlerTexture.GetContent(uwr);
+                GameObject image = GameObject.Find("RawImage2");
+                image.GetComponent<RawImage>().texture = texteures1;
+            }
+        }
+
+
+    }
+
+
+
+    IEnumerator picturesMain()
+    {
+        string pathPics2 = Application.dataPath + BackgroundsPath + Pictures;
         using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(pathPics2))
         {
             yield return uwr.SendWebRequest();
@@ -152,7 +200,7 @@ public class GameStart : MonoBehaviour
     }
 
 
-    
+
     void TaskWithParameters(string message)
     {
         //Output this to console when the Button2 is clicked
