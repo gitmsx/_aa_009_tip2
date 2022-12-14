@@ -94,7 +94,7 @@ public class GameStart : MonoBehaviour
         string textTMp = File.ReadAllText(jsonFile0);
 
 
-        print(jsonFile0);
+//        print(jsonFile0);
 
         SceneList List001 = JsonUtility.FromJson<SceneList>(textTMp);
         
