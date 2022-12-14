@@ -90,11 +90,11 @@ public class GameStart : MonoBehaviour
     public void Init1()
     {
 
-        string jsonFile0 = Application.dataPath + ScenePath + currentScene+".json";
+        string jsonFile0 = Application.dataPath + ScenePath + currentScene + ".json";
         string textTMp = File.ReadAllText(jsonFile0);
+
+
         print(jsonFile0);
-        print(textTMp);
-        
 
         SceneList List001 = JsonUtility.FromJson<SceneList>(textTMp);
         
@@ -125,27 +125,32 @@ public class GameStart : MonoBehaviour
 
     void TaskOnClick0()
     {
-        string currentScene = SceneClick[0];
+         currentScene = SceneClick[0];
         StartCoroutine(TaskOnClick_100(0));
+        Pictures = Picture[0];
+        
         newLevel();
     }
     void TaskOnClick1()
     {
-        string currentScene = SceneClick[1];
+         currentScene = SceneClick[1];
         StartCoroutine(TaskOnClick_100(1));
+        Pictures = Picture[1];
         newLevel();
     }
 
     void TaskOnClick2()
     {
-        string currentScene = SceneClick[2];
+         currentScene = SceneClick[2];
         StartCoroutine(TaskOnClick_100(2));
+        Pictures = Picture[2];
         newLevel();
     }
     void TaskOnClick3()
     {
-        string currentScene = SceneClick[3];
+         currentScene = SceneClick[3];
         StartCoroutine(TaskOnClick_100(3));
+        Pictures = Picture[3];
         newLevel();
     }
 
